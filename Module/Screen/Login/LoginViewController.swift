@@ -6,24 +6,55 @@
 //
 
 import UIKit
+import RxSwift
+import RxBiBinding
 
 class LoginViewController: UIViewController {
+    @IBOutlet weak var usernameTextField: UITextField!
+    @IBOutlet weak var usernameErrorLabel: UILabel!
+    @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var passwordErrorLabel: UILabel!
+    
+    @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var registerButton: UIButton!
+    
+    var viewModel: LoginViewModel!
+    let disposeBag = DisposeBag()
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        setupDisplay()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        viewModel = LoginViewModel()
+        viewModel.view = self
+        transformInput()
+        viewModel.transform()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func setupDisplay() {
+        usernameErrorLabel.isHidden = true
+        passwordErrorLabel.isHidden = true
     }
-    */
+    
+    func transformInput() {
+        viewModel.loginButtonTapped = loginButton.rx.tap.asDriver()
+        viewModel.registerButtonTapped = registerButton.rx.tap.asDriver()
+        
+        disposeBag.insert(
+            usernameTextField.rx.text <-> viewModel.username,
+            passwordTextField.rx.text <-> viewModel.password
+        )
+    }
 
+}
+
+
+extension LoginViewController: LoginProtocol {
+    func routeToDasboardPage() {
+        guard let transactionDashboardVC = self.storyboard?.instantiateViewController(withIdentifier: "TransactionDashboardViewController") else { return }
+        self.navigationController?.pushViewController(transactionDashboardVC, animated: true)
+    }
 }

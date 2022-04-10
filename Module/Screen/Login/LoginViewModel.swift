@@ -20,16 +20,39 @@ class LoginViewModel {
     var loginButtonTapped: Driver<Void> = .never()
     var registerButtonTapped: Driver<Void> = .never()
     
-    var username = BehaviorRelay<String>(value: "")
-    var password = BehaviorRelay<String>(value: "")
+    var username = BehaviorRelay<String?>(value: "")
+    var password = BehaviorRelay<String?>(value: "")
     
-//    private let movieService: MovieAPIServiceProtocol
-//    init(movieService: MovieAPIServiceProtocol = MovieAPIService()) {
-//        self.movieService = movieService
-//    }
+    private let apiService: APIServiceProtocol
+    init(apiService: APIServiceProtocol = APIService()) {
+        self.apiService = apiService
+    }
     
     func transform() {
+        
+        let callLoginAPI = loginButtonTapped.withLatestFrom(username.asDriver()).withLatestFrom(password.asDriver()) {($0, $1)}.flatMapLatest({ (username: String?, password: String?)  in
+            self.apiService.login(username: username!, password: password!)
+        })
+        
+        let loginSuccess = callLoginAPI.filter({$0.status == "success"}).do(onNext: { [weak self] loginResponse in
+            guard let self = self else {return}
+            print("Login Response: ", loginResponse)
+            UserDefaults.standard.set(loginResponse.token, forKey: "appToken")
+            UserDefaults.standard.set(loginResponse.accountNo, forKey: "accountNo")
+            self.view?.routeToDasboardPage()
+        })
+        
+
+        
+        let loginFailed = callLoginAPI.filter({$0.status == "failed"}).do(onNext: { [weak self] loginResponse in
+            guard let self = self else {return}
+            //
+        })
+
+        
         disposeBag.insert(
+            loginSuccess.drive(),
+            loginFailed.drive()
         )
     }
 }
