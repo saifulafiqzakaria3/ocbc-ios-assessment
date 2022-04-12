@@ -10,6 +10,8 @@ import RxCocoa
 protocol APIServiceProtocol {
     func login(username: String, password: String) -> Driver<AuthenticationResponse>
     func register(username: String, password: String) -> Driver<AuthenticationResponse>
+    func getBalanceInfo() -> Driver<Balance>
+    func getTransactionHistory() -> Driver<TransactionResponse>
 }
 
 
@@ -40,6 +42,22 @@ final class APIService: APIServiceProtocol {
         let resource = Resource<AuthenticationResponse>(url: url, parameter: paramater)
         
         return URLRequest.postWithParamaters(resource: resource).asDriver(onErrorRecover: {_ in
+            return Driver.empty()
+        })
+    }
+    
+    func getBalanceInfo() -> Driver<Balance> {
+        guard let url = URL(string: baseURL + balanceEndpoint) else { return Driver.empty() }
+        let resource = Resource<Balance>(url: url, parameter: nil)
+        return URLRequest.load(resource: resource).asDriver(onErrorRecover: {_ in
+            return Driver.empty()
+        })
+    }
+    
+    func getTransactionHistory() -> Driver<TransactionResponse> {
+        guard let url = URL(string: baseURL + transactionsEndpoint) else { return Driver.empty() }
+        let resource = Resource<TransactionResponse>(url: url, parameter: nil)
+        return URLRequest.load(resource: resource).asDriver(onErrorRecover: {_ in
             return Driver.empty()
         })
     }

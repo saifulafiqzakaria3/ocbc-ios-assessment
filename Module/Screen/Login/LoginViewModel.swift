@@ -43,7 +43,6 @@ class LoginViewModel {
         })
         
 
-        
         let loginFailed = callLoginAPI.filter({$0.status == "failed"}).do(onNext: { [weak self] loginResponse in
             guard let self = self else {return}
             //

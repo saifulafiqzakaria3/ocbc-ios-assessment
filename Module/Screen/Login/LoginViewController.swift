@@ -54,7 +54,7 @@ class LoginViewController: UIViewController {
 
 extension LoginViewController: LoginProtocol {
     func routeToDasboardPage() {
-        guard let transactionDashboardVC = self.storyboard?.instantiateViewController(withIdentifier: "TransactionDashboardViewController") else { return }
+        guard let transactionDashboardVC = self.storyboard?.instantiateViewController(withIdentifier: "AccountDashboardViewController") else { return }
         self.navigationController?.pushViewController(transactionDashboardVC, animated: true)
     }
 }
