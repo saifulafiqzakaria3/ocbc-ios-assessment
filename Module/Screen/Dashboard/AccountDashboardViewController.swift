@@ -24,6 +24,8 @@ class AccountDashboardViewController: UIViewController {
     @IBOutlet weak var transferButton: UIButton!
     
     override func viewWillAppear(_ animated: Bool) {
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+        navigationItem.setHidesBackButton(true, animated: animated)
         setupNavigationBarButton()
         setupDisplay()
         setupTransactionHistoryTable()
@@ -57,19 +59,20 @@ extension AccountDashboardViewController {
         
         transferButton.layer.cornerRadius = 8.0
         transferButton.layer.borderWidth = 1
+        
+        let username = UserDefaults.standard.string(forKey: "username")
+        accountHolderUsernameLabel.text = username ?? "N/A"
     }
     
     func setupNavigationBarButton() {
-        //self.navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Log Out", style: .plain, target: self, action: #selector(logoutUser))
     }
     
     @objc func logoutUser(){
-        print("clicked")
+        self.navigationController?.popViewController(animated: true)
     }
     
     func setupTransactionHistoryTable() {
-        //transactionHistoryTableView.separatorStyle = .none
         transactionHistoryTableView.register(UINib(nibName: "TransactionTableViewCell", bundle: nil), forCellReuseIdentifier: "TransactionTableViewCell")
         
         let dataSource = RxTableViewSectionedReloadDataSource<SectionModel<Date, Transaction>>(
@@ -82,14 +85,13 @@ extension AccountDashboardViewController {
             titleForHeaderInSection: { dataSource, sectionIndex in
                 return dataSource[sectionIndex].model.convertDateToString(to: "MMM d, yyyy")
             }
+            
         )
         
         viewModel.transactionSectionModel
             .bind(to: transactionHistoryTableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
-        
     }
-    
 }
 
 extension AccountDashboardViewController: DashboardProtocol {
@@ -97,7 +99,6 @@ extension AccountDashboardViewController: DashboardProtocol {
         let doubleStr = String(format: "%.2f", balanceInfo.balance ?? 0)
         balanceLabel.text = "SGD " + doubleStr
         accountNoLabel.text = balanceInfo.accountNo ?? "N/A"
-        accountHolderUsernameLabel.text = "N/A"
     }
     
     func routeToTransfer() {

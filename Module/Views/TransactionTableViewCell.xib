@@ -23,7 +23,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="iug-tc-yFJ">
                                 <rect key="frame" x="5" y="0.0" width="306" height="62"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="online-transfer-icon" translatesAutoresizingMaskIntoConstraints="NO" id="Ayy-j1-jSQ">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="online-money-icon" translatesAutoresizingMaskIntoConstraints="NO" id="Ayy-j1-jSQ">
                                         <rect key="frame" x="0.0" y="0.0" width="62" height="62"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="Ayy-j1-jSQ" secondAttribute="height" multiplier="1:1" id="M9u-kO-whK"/>
@@ -98,7 +98,7 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="online-transfer-icon" width="60" height="60"/>
+        <image name="online-money-icon" width="29" height="29"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

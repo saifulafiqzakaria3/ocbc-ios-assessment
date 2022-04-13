@@ -41,6 +41,7 @@ class LoginViewController: UIViewController {
     }
     
     func setupDisplay() {
+        passwordTextField.isSecureTextEntry = true
         usernameErrorLabel.isHidden = true
         passwordErrorLabel.isHidden = true
         usernameErrorLabel.text = "Username is required"
@@ -97,5 +98,10 @@ extension LoginViewController: LoginProtocol {
     func routeToDasboardPage() {
         guard let transactionDashboardVC = self.storyboard?.instantiateViewController(withIdentifier: "AccountDashboardViewController") else { return }
         self.navigationController?.pushViewController(transactionDashboardVC, animated: true)
+    }
+    
+    func routeToRegisterPage() {
+        guard let registerVC = self.storyboard?.instantiateViewController(withIdentifier: "RegisterAccountViewController") else { return }
+        self.navigationController?.pushViewController(registerVC, animated: true)
     }
 }

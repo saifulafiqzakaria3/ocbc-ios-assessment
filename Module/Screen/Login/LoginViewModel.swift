@@ -11,6 +11,7 @@ import RxSwift
 
 protocol LoginProtocol {
     func routeToDasboardPage()
+    func routeToRegisterPage()
 }
 
 class LoginViewModel {
@@ -41,6 +42,7 @@ class LoginViewModel {
             print("Login Response: ", loginResponse)
             UserDefaults.standard.set(loginResponse.token, forKey: "appToken")
             UserDefaults.standard.set(loginResponse.accountNo, forKey: "accountNo")
+            UserDefaults.standard.set(loginResponse.username, forKey: "username")
             self.isLoading.accept(false)
             self.view?.routeToDasboardPage()
         })
@@ -51,11 +53,16 @@ class LoginViewModel {
             self.isLoading.accept(false)
             print("Failed Response: ", loginResponse)
         })
-
+        
+        let routeToRegisterAccount = self.registerButtonTapped.do(onNext: { [weak self] _ in
+            guard let self = self else {return}
+            self.view?.routeToRegisterPage()
+        })
         
         disposeBag.insert(
             loginSuccess.drive(),
-            loginFailed.drive()
+            loginFailed.drive(),
+            routeToRegisterAccount.drive()
         )
     }
 }

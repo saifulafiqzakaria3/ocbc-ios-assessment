@@ -31,7 +31,7 @@ class TransactionTableViewCell: UITableViewCell {
         accountNoLabel.text = transaction.receipient?.accountNo ?? "N/A"
         
         if transaction.amount >= 0 {
-            transactionAmountLabel.textColor = .green
+            transactionAmountLabel.textColor = UIColor(red: 107/255, green: 203/255, blue: 119/255, alpha: 1)
         } else {
             transactionAmountLabel.textColor = .red
         }
