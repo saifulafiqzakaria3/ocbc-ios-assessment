@@ -38,9 +38,7 @@ extension URLRequest {
             request.httpBody = try? JSONSerialization.data(withJSONObject: param, options: .prettyPrinted)
             
             //status code is 200..<300 and only then return data, if not then it will throw an error
-            return URLSession.shared.rx.data(request: request).catch{ error in
-                return Observable.just(Data.init())
-            }
+            return URLSession.shared.rx.data(request: request)
         }.map { data -> T in
             return try JSONDecoder().decode(T.self, from: data)
         }

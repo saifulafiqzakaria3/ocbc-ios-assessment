@@ -22,7 +22,7 @@ class AccountDashboardViewModel {
     var startLoad: Driver<Void> = .never()
     var makeTransferButtonTapped: Driver<Void> = .never()
     let transactionList = BehaviorRelay<[Transaction]>(value: [])
-    let transactionSectionModel = BehaviorRelay<[SectionModel<String, Transaction>]>(value: [])
+    let transactionSectionModel = BehaviorRelay<[SectionModel<Date, Transaction>]>(value: [])
     
     private let apiService: APIServiceProtocol
     init(apiService: APIServiceProtocol = APIService()) {
@@ -42,6 +42,7 @@ class AccountDashboardViewModel {
         let updateTable = getTransactionHistory.do(onNext: { [weak self] resp in
             guard let self = self, let transactions = resp.data else { return }
             let sectionModels = self.createSectionModel(transactions: transactions)
+            print("Section Models: ", sectionModels)
             self.transactionSectionModel.accept(sectionModels)
         })
         
@@ -74,14 +75,6 @@ extension AccountDashboardViewModel {
         
     }
     
-    private func convertDateToString(dateToConvert: Date, to dateFormat: String = "YY/MM/dd") -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale.current
-        dateFormatter.timeZone = TimeZone.autoupdatingCurrent
-        dateFormatter.dateFormat = dateFormat
-        return dateFormatter.string(from: dateToConvert)
-    }
-    
     func groupTransactionsByDate(transactions: [Transaction]) -> [Date: [Transaction]]{
         let empty: [Date: [Transaction]] = [:]
         return transactions.reduce(into: empty) { acc, transaction in
@@ -93,20 +86,20 @@ extension AccountDashboardViewModel {
         }
     }
     
-    func createSectionModel(transactions: [Transaction]) -> [SectionModel<String, Transaction>] {
+    func createSectionModel(transactions: [Transaction]) -> [SectionModel<Date, Transaction>] {
         let transactionHistoryDict = self.groupTransactionsByDate(transactions: transactions)
-        return transactionHistoryDict.map({(key, trans) -> SectionModel<String, Transaction> in
-            let formattedDateString = self.convertDateToString(dateToConvert: key, to: "MMM d, yyyy")
-            return SectionModel(model: formattedDateString, items: trans)
+        let transHistSM = transactionHistoryDict.map({(key, trans) -> SectionModel<Date, Transaction> in
+            return SectionModel(model: key, items: trans)
         })
+        return transHistSM.sorted(by: {$0.model > $1.model})
     }
     
     
-//    private func groupTransactionsByDate(transactions: [Transaction]) {
-//        //var dict: [String: [Transaction]] = [:]
-//        let trans = Dictionary(grouping: transactions) { (transaction) -> DateComponents in
+//    private func groupTransactionByDate(transactions: [Transaction]) {
+//        let trans = Dictionary(grouping: transactions) { (transaction) -> Date in
 //            let transDate = self.convertISO8601StringToDate(isoString: transaction.transactionDate) ?? Date.now
-//            let date = Calendar.current.dateComponents([.day], from: (transDate))
+//            let components = Calendar.current.dateComponents([.day], from: (transDate))
+//            let date = Calendar.current.date(from: components)!
 //            return date
 //        }
 //

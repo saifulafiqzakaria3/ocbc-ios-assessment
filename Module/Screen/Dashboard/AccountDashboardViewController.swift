@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import RxDataSources
 
 class AccountDashboardViewController: UIViewController {
     
@@ -25,6 +26,7 @@ class AccountDashboardViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         setupNavigationBarButton()
         setupDisplay()
+        setupTransactionHistoryTable()
     }
     
     override func viewDidLoad() {
@@ -63,29 +65,29 @@ extension AccountDashboardViewController {
     }
     
     @objc func logoutUser(){
-         print("clicked")
+        print("clicked")
     }
     
     func setupTransactionHistoryTable() {
-        transactionHistoryTableView.separatorStyle = .none
+        //transactionHistoryTableView.separatorStyle = .none
+        transactionHistoryTableView.register(UINib(nibName: "TransactionTableViewCell", bundle: nil), forCellReuseIdentifier: "TransactionTableViewCell")
         
-        //transactionHistoryTableView.register(UINib(nibName: "", bundle: nil), forCellReuseIdentifier: "")
+        let dataSource = RxTableViewSectionedReloadDataSource<SectionModel<Date, Transaction>>(
+            configureCell: { (_, tv, indexPath, element) in
+                let cell = tv.dequeueReusableCell(withIdentifier: "TransactionTableViewCell")! as! TransactionTableViewCell
+                cell.setupTransactionCell(transaction: element)
+                return cell
+                
+            },
+            titleForHeaderInSection: { dataSource, sectionIndex in
+                return dataSource[sectionIndex].model.convertDateToString(to: "MMM d, yyyy")
+            }
+        )
         
-//        let populateMovieList = viewModel.movieList.bind(to: transactionHistoryTableView.rx.items(cellIdentifier: "MovieTableViewCell")) { row, item, cell in
-//            if let movieCell = cell as? MovieTableViewCell {
-//                movieCell.setupCell(movie: item)
-//            }
-//        }
-//
-//        let removeSelectionHighlight =  tableView.rx.itemSelected.subscribe(onNext: { [weak self] indexpath in
-//            self?.tableView.deselectRow(at: indexpath, animated: true)
-//        })
-//
-//
-//        disposeBag.insert(
-//            populateMovieList,
-//            removeSelectionHighlight
-//        )
+        viewModel.transactionSectionModel
+            .bind(to: transactionHistoryTableView.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
+        
     }
     
 }
