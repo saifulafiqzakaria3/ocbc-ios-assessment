@@ -103,7 +103,7 @@ extension AccountDashboardViewController: DashboardProtocol {
     }
     
     func routeToTransfer() {
-        guard let transactionDashboardVC = self.storyboard?.instantiateViewController(withIdentifier: "TransferViewController") else { return }
-        self.navigationController?.pushViewController(transactionDashboardVC, animated: true)
+//        guard let transactionDashboardVC = self.storyboard?.instantiateViewController(withIdentifier: "TransferViewController") else { return }
+//        self.navigationController?.pushViewController(transactionDashboardVC, animated: true)
     }
 }
