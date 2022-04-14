@@ -70,6 +70,8 @@ extension AccountDashboardViewController {
     
     @objc func logoutUser(){
         self.navigationController?.popViewController(animated: true)
+        UserDefaults.standard.removeObject(forKey: "appToken")
+        UserDefaults.standard.removeObject(forKey: "username")
     }
     
     func setupTransactionHistoryTable() {
