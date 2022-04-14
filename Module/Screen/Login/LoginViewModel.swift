@@ -10,8 +10,8 @@ import RxCocoa
 import RxSwift
 
 protocol LoginProtocol {
-    func routeToDasboardPage()
-    func routeToRegisterPage()
+    func routeToDasboardPage(apiService: APIServiceProtocol)
+    func routeToRegisterPage(apiService: APIServiceProtocol)
 }
 
 class LoginViewModel {
@@ -44,7 +44,7 @@ class LoginViewModel {
             UserDefaults.standard.set(loginResponse.accountNo, forKey: "accountNo")
             UserDefaults.standard.set(loginResponse.username, forKey: "username")
             self.isLoading.accept(false)
-            self.view?.routeToDasboardPage()
+            self.view?.routeToDasboardPage(apiService: self.apiService)
         })
         
 
@@ -56,7 +56,7 @@ class LoginViewModel {
         
         let routeToRegisterAccount = self.registerButtonTapped.do(onNext: { [weak self] _ in
             guard let self = self else {return}
-            self.view?.routeToRegisterPage()
+            self.view?.routeToRegisterPage(apiService: self.apiService)
         })
         
         disposeBag.insert(

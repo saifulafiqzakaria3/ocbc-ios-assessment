@@ -95,13 +95,15 @@ extension LoginViewController: UITextFieldDelegate {
 
 
 extension LoginViewController: LoginProtocol {
-    func routeToDasboardPage() {
-        guard let transactionDashboardVC = self.storyboard?.instantiateViewController(withIdentifier: "AccountDashboardViewController") else { return }
-        self.navigationController?.pushViewController(transactionDashboardVC, animated: true)
+    func routeToDasboardPage(apiService: APIServiceProtocol) {
+        guard let dashboardVC = self.storyboard?.instantiateViewController(withIdentifier: "AccountDashboardViewController") as? AccountDashboardViewController else { return }
+        dashboardVC.viewModel = AccountDashboardViewModel(apiService: apiService)
+        self.navigationController?.pushViewController(dashboardVC, animated: true)
     }
     
-    func routeToRegisterPage() {
-        guard let registerVC = self.storyboard?.instantiateViewController(withIdentifier: "RegisterAccountViewController") else { return }
+    func routeToRegisterPage(apiService: APIServiceProtocol) {
+        guard let registerVC = self.storyboard?.instantiateViewController(withIdentifier: "RegisterAccountViewController") as? RegisterAccountViewController else { return }
+        registerVC.viewModel = RegisterAccountViewModel(apiService: apiService)
         self.navigationController?.pushViewController(registerVC, animated: true)
     }
 }

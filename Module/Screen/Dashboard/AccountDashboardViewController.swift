@@ -33,7 +33,6 @@ class AccountDashboardViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel = AccountDashboardViewModel()
         viewModel.view = self
         transformInput()
         viewModel.transform()

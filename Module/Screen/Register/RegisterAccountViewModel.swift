@@ -10,7 +10,7 @@ import RxCocoa
 import RxSwift
 
 protocol RegisterAccountProtocol {
-    func routeToDasboardPage()
+    func routeToDasboardPage(apiService: APIServiceProtocol)
     func routeToLoginPage()
     func updatePasswordMatchingUI(isPasswordSame: Bool)
 }
@@ -50,7 +50,7 @@ class RegisterAccountViewModel {
             UserDefaults.standard.set(registerResponse.token, forKey: "appToken")
             UserDefaults.standard.set(self.username.value, forKey: "username")
             self.isLoading.accept(false)
-            self.view?.routeToDasboardPage()
+            self.view?.routeToDasboardPage(apiService: self.apiService)
         })
         
         let registerFailed = callRegisterAPI.filter({$0.status == "failed"}).do(onNext: { [weak self] registerResponse in
