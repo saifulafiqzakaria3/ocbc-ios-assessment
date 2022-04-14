@@ -34,7 +34,7 @@ class RegisterAccountViewModel {
     
     func transform() {
         
-        let checkPasswordMatching = self.registerButtonTapped.withLatestFrom(confirmPassword.asDriver()).withLatestFrom(password.asDriver()){($0, $1)}.filter({$0 != nil && $1 != nil && !$0!.isEmpty && !$1!.isEmpty}).map({$0 == $1})
+        let checkPasswordMatching = self.registerButtonTapped.withLatestFrom(confirmPassword.asDriver()).withLatestFrom(password.asDriver()){($0, $1)}.map(checkPasswordMatch)
 
         let displayErrorNotMatch = checkPasswordMatching.do(onNext: { same in
             self.view?.updatePasswordMatchingUI(isPasswordSame: same)
@@ -69,6 +69,14 @@ class RegisterAccountViewModel {
             registerFailed.drive(),
             popBackToLogin.drive()
         )
+    }
+    
+    
+    private func checkPasswordMatch(password: String?, confirmPassword: String?) -> Bool {
+        guard let password = password, let confirmPassword = confirmPassword else {
+            return false
+        }
+        return confirmPassword == password ? true : false
     }
 }
 
