@@ -1,0 +1,10 @@
+Only 3 screens are made for this app:
+- Login
+- Register
+- Dashboard
+
+This app is make based on assumptions:
+1. date is supplied in iso8601 “yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ” date format
+2. Other transactionType in transactions api is unknown
+3. Currency is in SGD
+4. Only one week is given to finish this. So can’t really finish the bonus part since busy with other works.
