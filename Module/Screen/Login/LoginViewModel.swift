@@ -39,7 +39,6 @@ class LoginViewModel {
         
         let loginSuccess = callLoginAPI.filter({$0.status == "success"}).do(onNext: { [weak self] loginResponse in
             guard let self = self else {return}
-            print("Login Response: ", loginResponse)
             UserDefaults.standard.set(loginResponse.token, forKey: "appToken")
             UserDefaults.standard.set(loginResponse.accountNo, forKey: "accountNo")
             UserDefaults.standard.set(loginResponse.username, forKey: "username")
@@ -48,10 +47,10 @@ class LoginViewModel {
         })
         
 
-        let loginFailed = callLoginAPI.filter({$0.status == "failed"}).do(onNext: { [weak self] loginResponse in
+        let loginFailed = callLoginAPI.filter({$0.status != "success"}).do(onNext: { [weak self] loginResponse in
             guard let self = self else {return}
             self.isLoading.accept(false)
-            print("Failed Response: ", loginResponse)
+            self.view?.showAlert(title: "Login Failed", message: loginResponse.error ?? "")
         })
         
         let routeToRegisterAccount = self.registerButtonTapped.do(onNext: { [weak self] _ in

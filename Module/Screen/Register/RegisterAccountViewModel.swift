@@ -53,9 +53,10 @@ class RegisterAccountViewModel {
             self.view?.routeToDasboardPage(apiService: self.apiService)
         })
         
-        let registerFailed = callRegisterAPI.filter({$0.status == "failed"}).do(onNext: { [weak self] registerResponse in
+        let registerFailed = callRegisterAPI.filter({$0.status != "success"}).do(onNext: { [weak self] registerResponse in
             guard let self = self else {return}
             self.isLoading.accept(false)
+            self.view?.showAlert(title: "Registration Failed", message: registerResponse.error ?? "")
         })
         
         let popBackToLogin = self.loginButtonTapped.do(onNext: { [weak self] _ in
@@ -72,7 +73,7 @@ class RegisterAccountViewModel {
     }
     
     
-    private func checkPasswordMatch(password: String?, confirmPassword: String?) -> Bool {
+    func checkPasswordMatch(password: String?, confirmPassword: String?) -> Bool {
         guard let password = password, let confirmPassword = confirmPassword else {
             return false
         }

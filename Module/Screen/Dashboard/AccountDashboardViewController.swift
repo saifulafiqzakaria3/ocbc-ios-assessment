@@ -16,6 +16,7 @@ class AccountDashboardViewController: UIViewController {
     let disposeBag = DisposeBag()
     
     @IBOutlet weak var accountInfoCardView: UIView!
+    @IBOutlet weak var accountCardBackgroundImageView: UIImageView!
     @IBOutlet weak var balanceLabel: UILabel!
     @IBOutlet weak var accountNoLabel: UILabel!
     @IBOutlet weak var accountHolderUsernameLabel: UILabel!
@@ -38,6 +39,13 @@ class AccountDashboardViewController: UIViewController {
         viewModel.transform()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.setBackgroundImage(nil, for:.default)
+        self.navigationController?.navigationBar.shadowImage = nil
+        self.navigationController?.navigationBar.layoutIfNeeded()
+    }
+    
     func transformInput() {
         viewModel.startLoad = self.rx.methodInvoked(#selector(UIViewController.viewWillAppear(_:))).asDriver(onErrorRecover: { _ in
             return Driver.empty()
@@ -53,18 +61,48 @@ extension AccountDashboardViewController {
         accountInfoCardView.layer.shadowColor = CGColor(red: 118/255, green: 118/255, blue: 118/255, alpha: 1)
         accountInfoCardView.layer.shadowOffset = .zero
         accountInfoCardView.layer.shadowRadius = 5
-        accountInfoCardView.layer.shadowOpacity = 0.2
+        accountInfoCardView.layer.shadowOpacity = 1
         accountInfoCardView.layer.masksToBounds = false
+        accountInfoCardView.layer.borderWidth = 1
+        
+        accountCardBackgroundImageView.layer.cornerRadius = 10.0
         
         transferButton.layer.cornerRadius = 8.0
-        transferButton.layer.borderWidth = 1
+        //transferButton.layer.borderWidth = 1
         
-        let username = UserDefaults.standard.string(forKey: "username")
-        accountHolderUsernameLabel.text = username ?? "N/A"
+        let username = UserDefaults.standard.string(forKey: "username") ?? "No Name"
+        accountHolderUsernameLabel.text = username
+        
+        let label = UILabel()
+        label.textColor = UIColor.white
+        label.text = "Welcome \(username)!";
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(customView: label)
     }
     
     func setupNavigationBarButton() {
+        //remove navbar border line
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.layoutIfNeeded()
+        
+        //set navbar log put button
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Log Out", style: .plain, target: self, action: #selector(logoutUser))
+        navigationItem.rightBarButtonItem?.tintColor = UIColor.yellow
+        
+        if #available(iOS 15, *) {
+            let ocbcRed: UIColor = UIColor(red: 239/255, green: 34/255, blue: 28/255, alpha: 1)
+            // Navigation Bar background color
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = ocbcRed
+            
+            // setup title font color
+            let titleAttribute = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 25, weight: .bold), NSAttributedString.Key.foregroundColor: ocbcRed]
+            appearance.titleTextAttributes = titleAttribute
+            
+            navigationController?.navigationBar.standardAppearance = appearance
+            navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        }
     }
     
     @objc func logoutUser(){
@@ -89,6 +127,10 @@ extension AccountDashboardViewController {
             
         )
         
+        transactionHistoryTableView.rx.itemSelected.subscribe(onNext: { [weak self] indexpath in
+            self?.transactionHistoryTableView.deselectRow(at: indexpath, animated: true)
+        }).disposed(by: disposeBag)
+        
         viewModel.transactionSectionModel
             .bind(to: transactionHistoryTableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
@@ -103,7 +145,7 @@ extension AccountDashboardViewController: DashboardProtocol {
     }
     
     func routeToTransfer() {
-//        guard let transactionDashboardVC = self.storyboard?.instantiateViewController(withIdentifier: "TransferViewController") else { return }
-//        self.navigationController?.pushViewController(transactionDashboardVC, animated: true)
+        //        guard let transactionDashboardVC = self.storyboard?.instantiateViewController(withIdentifier: "TransferViewController") else { return }
+        //        self.navigationController?.pushViewController(transactionDashboardVC, animated: true)
     }
 }

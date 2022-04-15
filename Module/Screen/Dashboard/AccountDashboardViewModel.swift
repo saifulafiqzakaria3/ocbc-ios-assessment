@@ -34,7 +34,7 @@ class AccountDashboardViewModel {
         let getBalanceInfo = startLoad.flatMapLatest{self.apiService.getBalanceInfo()}
         let getTransactionHistory = startLoad.flatMapLatest{self.apiService.getTransactionHistory()}
         
-        let updateBalanceCard = getBalanceInfo.do(onNext: { [weak self] balanceInfo in
+        let updateBalanceCard = getBalanceInfo.filter{$0.status == "success"}.do(onNext: { [weak self] balanceInfo in
             guard let self = self else { return }
             self.view?.updateBalanceInfo(balanceInfo: balanceInfo)
         })
@@ -62,7 +62,7 @@ class AccountDashboardViewModel {
 
 extension AccountDashboardViewModel {
     //TODO: Convert to local time
-    private func convertISO8601StringToDate(isoString: String?) -> Date? {
+    func convertISO8601StringToDate(isoString: String?, isoDateFormat: String = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ") -> Date? {
         guard let isoString = isoString else {
             return nil
         }
@@ -70,7 +70,7 @@ extension AccountDashboardViewModel {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale.current
         dateFormatter.timeZone = TimeZone.autoupdatingCurrent
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
+        dateFormatter.dateFormat = isoDateFormat
         return dateFormatter.date(from: isoString)
         
     }
@@ -102,10 +102,6 @@ extension AccountDashboardViewModel {
 //            let date = Calendar.current.date(from: components)!
 //            return date
 //        }
-//
-//        print("groupTransactionsByDate: ", trans)
-//        print("groupTransactionsByDate Length: ", trans.count)
 //    }
-    
 
 }

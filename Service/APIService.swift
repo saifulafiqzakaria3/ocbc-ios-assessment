@@ -31,8 +31,8 @@ final class APIService: APIServiceProtocol {
         let paramater = ["username" : username, "password" : password]
         let resource = Resource<AuthenticationResponse>(url: url, parameter: paramater)
         
-        return URLRequest.postWithParamaters(resource: resource).asDriver(onErrorRecover: {error in
-            let errorResponse = AuthenticationResponse(status: "failed", token: "", username: nil, accountNo: nil)
+        return URLRequest.postWithParamaters(resource: resource).asDriver(onErrorRecover: { error in
+            let errorResponse = AuthenticationResponse(status: "failed", error: error.localizedDescription, token: "", username: nil, accountNo: nil)
             return Driver.just(errorResponse)
         })
     }
@@ -44,7 +44,7 @@ final class APIService: APIServiceProtocol {
         let resource = Resource<AuthenticationResponse>(url: url, parameter: paramater)
         
         return URLRequest.postWithParamaters(resource: resource).asDriver(onErrorRecover: {error in
-            let errorResponse = AuthenticationResponse(status: "failed", token: "", username: nil, accountNo: nil)
+            let errorResponse = AuthenticationResponse(status: "failed", error: error.localizedDescription, token: "", username: nil, accountNo: nil)
             return Driver.just(errorResponse)
         })
     }

@@ -239,6 +239,9 @@
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ouj-fJ-rjC">
                                                                 <rect key="frame" x="16" y="30" width="382" height="232"/>
                                                                 <subviews>
+                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg-bank-card-171x96" translatesAutoresizingMaskIntoConstraints="NO" id="G85-HY-Oz7">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="382" height="232"/>
+                                                                    </imageView>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="P2S-w9-zfo">
                                                                         <rect key="frame" x="16" y="16" width="350" height="200"/>
                                                                         <subviews>
@@ -257,7 +260,7 @@
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Account No" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6bu-Jy-rVv">
                                                                                 <rect key="frame" x="0.0" y="103" width="350" height="20.5"/>
                                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                                <color key="textColor" systemColor="systemGray2Color"/>
+                                                                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8qt-hg-OlE">
@@ -269,7 +272,7 @@
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Account Holder Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GB3-4P-LDT">
                                                                                 <rect key="frame" x="0.0" y="154" width="350" height="20.5"/>
                                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                                <color key="textColor" systemColor="systemGray2Color"/>
+                                                                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pL1-dW-iLX">
@@ -283,9 +286,13 @@
                                                                 </subviews>
                                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                 <constraints>
+                                                                    <constraint firstAttribute="trailing" secondItem="G85-HY-Oz7" secondAttribute="trailing" id="8Us-4Y-ksz"/>
+                                                                    <constraint firstAttribute="bottom" secondItem="G85-HY-Oz7" secondAttribute="bottom" id="8p8-mB-xAe"/>
+                                                                    <constraint firstItem="G85-HY-Oz7" firstAttribute="leading" secondItem="ouj-fJ-rjC" secondAttribute="leading" id="Sw1-zt-Oce"/>
                                                                     <constraint firstItem="P2S-w9-zfo" firstAttribute="leading" secondItem="ouj-fJ-rjC" secondAttribute="leading" constant="16" id="ane-Ay-6vj"/>
                                                                     <constraint firstItem="P2S-w9-zfo" firstAttribute="top" secondItem="ouj-fJ-rjC" secondAttribute="top" constant="16" id="c1T-x5-7St"/>
                                                                     <constraint firstAttribute="trailing" secondItem="P2S-w9-zfo" secondAttribute="trailing" constant="16" id="oKl-E1-egu"/>
+                                                                    <constraint firstItem="G85-HY-Oz7" firstAttribute="top" secondItem="ouj-fJ-rjC" secondAttribute="top" id="qkN-hV-oCG"/>
                                                                     <constraint firstAttribute="bottom" secondItem="P2S-w9-zfo" secondAttribute="bottom" constant="16" id="r0a-XQ-6dr"/>
                                                                 </constraints>
                                                             </view>
@@ -340,14 +347,14 @@
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H2g-J4-0wE">
                                                                 <rect key="frame" x="16" y="5" width="382" height="50"/>
-                                                                <color key="backgroundColor" systemColor="systemPinkColor"/>
+                                                                <color key="backgroundColor" systemColor="systemYellowColor"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="50" id="A5J-BF-Zcu"/>
                                                                 </constraints>
-                                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <color key="tintColor" systemColor="systemRedColor"/>
                                                                 <state key="normal" title="Button"/>
                                                                 <buttonConfiguration key="configuration" style="plain" title="Make Transfer">
-                                                                    <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="17"/>
+                                                                    <fontDescription key="titleFontDescription" type="boldSystem" pointSize="17"/>
                                                                 </buttonConfiguration>
                                                             </button>
                                                         </subviews>
@@ -391,6 +398,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="heD-C5-Ee8"/>
                     <connections>
+                        <outlet property="accountCardBackgroundImageView" destination="G85-HY-Oz7" id="KZB-HE-ONG"/>
                         <outlet property="accountHolderUsernameLabel" destination="pL1-dW-iLX" id="LT3-8L-94f"/>
                         <outlet property="accountInfoCardView" destination="ouj-fJ-rjC" id="Gu6-NX-Ecv"/>
                         <outlet property="accountNoLabel" destination="8qt-hg-OlE" id="mzw-FN-MCK"/>
@@ -716,15 +724,13 @@
         </scene>
     </scenes>
     <resources>
+        <image name="bg-bank-card-171x96" width="171" height="96"/>
         <image name="ocbc-bank-logo" width="266.5" height="141.5"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
-        <systemColor name="systemGray2Color">
-            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemPinkColor">
-            <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemYellowColor">
             <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
