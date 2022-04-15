@@ -9,7 +9,8 @@ import Foundation
 
 struct AuthenticationResponse: Decodable {
     var status: String
-    var token: String
+    var error: String?
+    var token: String?
     var username: String?
     var accountNo: String?
 }
